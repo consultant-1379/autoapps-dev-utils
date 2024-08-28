@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ COPYRIGHT Ericsson 2024 - 2024
+ ~
+ ~
+ ~
+ ~ The copyright to the computer program(s) herein is the property of
+ ~
+ ~ Ericsson Inc. The programs may be used and/or copied only with written
+ ~
+ ~ permission from Ericsson Inc. or in accordance with the terms and
+ ~
+ ~ conditions stipulated in the agreement/contract under which the
+ ~
+ ~ program(s) have been supplied.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ericsson.oss.apps</groupId>
+    <artifactId>eric-oss-apps-autoapps-devutils</artifactId>
+    <version>1.2</version>
+    <name>eric-oss-apps-autoapps-devutils</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Set compiler Java version, MUST match the Dockerfile JDK version -->
+        <maven.compiler.release>17</maven.compiler.release>
+
+        <!-- 3PP Versions -->
+        <version.httpcomponents>5.2.1</version.httpcomponents>
+        <!-- https://scas.internal.ericsson.com/search3pp?compProdNumber=60%2FCAX1053846&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+        <log4j2.version>2.19.0</log4j2.version>
+        <!-- https://scas.internal.ericsson.com/search3pp?compProdNumber=49%2FCAX1053123&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+        <version.lombok>1.18.24</version.lombok>
+        <!-- https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1007979 -->
+        <version.micrometer>1.11.2</version.micrometer>
+        <!-- https://scas.internal.ericsson.com/search3pp?compProdNumber=97%2FCTX1023759&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+        <version.opencsv>5.7.1</version.opencsv>
+        <!-- https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1028400 -->
+        <version.openjdk>17</version.openjdk>
+        <!-- https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1044400 -->
+        <version.swagger>1.6.2</version.swagger>
+        <!-- https://scas.internal.ericsson.com/search3pp?compProdNumber=180%2FCAX1058168&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+        <logback.version>1.4.12</logback.version>
+        <!-- https://scas.internal.ericsson.com/search3pp?compProdNumber=54%2FCAX1055342&compProdNumber-filter=contains -->
+
+        <!-- Ericsson Dependency Versions -->
+        <version.enm-yang-parser>1.0.102</version.enm-yang-parser>
+
+        <!-- Build Dependencies -->
+        <version.openapi-generator-maven-plugin>6.6.0</version.openapi-generator-maven-plugin>
+        <!-- Release Date: Dec 21, 2020 -->
+
+
+        <!-- https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1028400 -->
+        <version.maven-sortpom-plugin>2.13.1</version.maven-sortpom-plugin>
+        <version.maven-scm-provider-gitexe>1.8.1</version.maven-scm-provider-gitexe>
+        <snakeyaml.version>2.2</snakeyaml.version>
+
+        <version.flyway>10.0.0</version.flyway>
+        <!-- https://scas.internal.ericsson.com/search3pp?compName=flyway&compName-filter=fts&compProdNumber=46%2FCAX1056970&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+
+        <version.postgresql>42.6.0</version.postgresql>
+        <!-- https://scas.internal.ericsson.com/search3pp?compName=postgres&compName-filter=fts&compProdNumber=8%2FCTX1020921&compProdNumber-filter=contains&rowDisplay=Card-Simple -->
+
+        <!-- Test Dependencies -->
+        <version.junit-jupiter>5.10.0-RC1</version.junit-jupiter>
+        <version.android-json>0.0.20131108.vaadin1</version.android-json>
+        <version.assertj>3.24.2</version.assertj>
+        <version.awaitility>4.2.0</version.awaitility>
+        <version.gmaven>1.5</version.gmaven>
+        <version.groovy>3.0.17</version.groovy>
+        <version.guava>32.1.3-jre</version.guava>
+        <version.hamcrest>2.2</version.hamcrest>
+        <version.json-path>2.8.0</version.json-path>
+        <version.license-maven-plugin>3.0</version.license-maven-plugin>
+        <version.mockito>5.2.0</version.mockito>
+        <version.rest-assured>5.3.0</version.rest-assured>
+        <version.skyscreamer-jsonassert>1.5.1</version.skyscreamer-jsonassert>
+        <version.spock>2.4-M1-groovy-3.0</version.spock>
+        <version.toomuchcoding-jsonassert>0.6.2</version.toomuchcoding-jsonassert>
+        <version.wiremock-jre8>2.35.0</version.wiremock-jre8>
+
+        <version.h2>2.2.220</version.h2>
+        <!-- https://scas.internal.ericsson.com/search3pp?compName=h2&compName-filter=fts&compProdNumber=31%2FCAX1054380&compProdNumber-filter=contains&rowDisplay=Card-Simple  -->
+
+        <!-- JaCoCo plugin for Java Code Coverage -->
+        <version.jcoco-maven.plugin>0.8.10</version.jcoco-maven.plugin>
+        <!-- Minimum ratio or percentage of instructions to be covered, used by JaCoCo plugin.
+             Industry standard is 0.8 or 80% which allows at least 80%  of the code to be covered by the test cases. -->
+        <jacoco-maven-plugin.coveredratio.minimum>0.85</jacoco-maven-plugin.coveredratio.minimum>
+        <!-- Variable used for updating current year in Copyrights -->
+        <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
+        <currentYear>${maven.build.timestamp}</currentYear>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <scope.h2>test</scope.h2>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${version.lombok}</version>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${version.assertj}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>${version.awaitility}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${version.guava}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>${version.hamcrest}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${version.skyscreamer-jsonassert}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.toomuchcoding.jsonassert</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${version.toomuchcoding-jsonassert}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${version.json-path}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${version.junit-jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${version.junit-jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${version.mockito}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured-all</artifactId>
+            <version>${version.rest-assured}</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.groovy</groupId>
+                    <artifactId>groovy</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.groovy</groupId>
+                    <artifactId>groovy-xml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.groovy</groupId>
+                    <artifactId>groovy-json</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.groovy</groupId>
+                    <artifactId>groovy-nio</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <version>${version.spock}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8-standalone</artifactId>
+            <version>${version.wiremock-jre8}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/eric-oss-auto-config-consistency-openapi.zip</exclude>
+                    <exclude>**/eric-log-transformer.p12</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmaven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
+                <version>${version.gmaven}</version>
+                <configuration>
+                    <providerSelection>2.0</providerSelection>
+                    <source/>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.gmaven.runtime</groupId>
+                        <artifactId>gmaven-runtime-2.0</artifactId>
+                        <version>${version.gmaven}</version>
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy-all</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>${version.groovy}</version>
+                        <scope>runtime</scope>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>junit-and-spock-tests</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <reportsDirectory>${project.build.directory}/surefire-reports/junit-and-spock-tests
+                            </reportsDirectory>
+                            <includes>
+                                <include>**/*Test.java</include>
+                                <include>/**/*TestSpec.java</include>
+                            </includes>
+                            <excludes>
+                                <exclude>**/*CasesTest.java</exclude>
+                            </excludes>
+                            <systemPropertyVariables>
+                                <spock.report.format>html</spock.report.format>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <skip>${skipTests}</skip>
+                </configuration>
+            </plugin>
+            <!-- JaCoCo plugin for Java Code Coverage -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${version.jcoco-maven.plugin}</version>
+                <configuration>
+                    <append>true</append>
+                    <excludes>
+                        <exclude>**/apps/client/**/*</exclude>
+                        <exclude>**/model/**/*</exclude>
+                        <exclude>**/api/**/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <!-- JaCoCo uses a set of different counters to calculate coverage metrics -->
+                        <!-- Check configuration used to specify rules on element types (BUNDLE,
+                                        PACKAGE, CLASS, SOURCEFILE or METHOD) with a list of limits. Each limit applies
+                                        to a certain counter (INSTRUCTION, LINE, BRANCH, COMPLEXITY, METHOD, CLASS)
+                                        and defines a minimum or maximum for the corresponding value (TOTALCOUNT,
+                                        COVEREDCOUNT, MISSEDCOUNT, COVEREDRATIO, MISSEDRATIO). A limit ratio may
+                                        optionally be declared as a percentage where 0.80 and 80% represent the same
+                                        value, the value must end with %. -->
+                        <configuration>
+                            <rules>
+                                <rule implementation="org.jacoco.maven.RuleConfiguration">
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit implementation="org.jacoco.report.check.Limit">
+                                            <counter>INSTRUCTION</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>${jacoco-maven-plugin.coveredratio.minimum}</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                            <excludes>
+                                <exclude>**/apps/client/**/*</exclude>
+                                <exclude>**/model/**/*</exclude>
+                                <exclude>**/api/**/*</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>agent-for-ut</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/apps/client/**/*</exclude>
+                                <exclude>**/model/**/*</exclude>
+                                <exclude>**/api/**/*</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>agent-for-it</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/apps/client/**/*</exclude>
+                                <exclude>**/model/**/*</exclude>
+                                <exclude>**/api/**/*</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-site</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <phase>verify</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- JaCoCo plugin for Java Code Coverage -->
+        </plugins>
+    </build>
+</project>
